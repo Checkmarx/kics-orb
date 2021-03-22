@@ -42,5 +42,5 @@ parameters:
 steps:
   - checkout
   - scan:
-      path: <<parameters.directory>>
+      path: <<parameters.path>>
       output_formats: <<parameters.output_formats>>

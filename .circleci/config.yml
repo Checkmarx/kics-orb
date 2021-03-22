@@ -21,7 +21,7 @@ jobs:
     steps:
       - checkout
       - kics-scan/scan:
-          - path: "."
+          path: "."
 workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>

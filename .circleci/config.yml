@@ -71,3 +71,4 @@ workflows:
               only:
                 - master
                 - main
+                

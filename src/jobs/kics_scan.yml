@@ -43,7 +43,6 @@ steps:
   - checkout
   - scan:
       path: <<parameters.path>>
-      output_formats: <<parameters.output_formats>>
       config_path: <<parameters.config_path>>
       platform_type: <<parameters.platform_type>>
       exclude_paths: <<parameters.exclude_paths>
@@ -55,8 +54,4 @@ steps:
       payload_path: <<parameters.payload_path>
       queries: <<parameters.queries>
       verbose: <<parameters.verbose>
-      
-      
-      
-      
       

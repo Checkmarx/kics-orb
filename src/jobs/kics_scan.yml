@@ -4,37 +4,38 @@ executor: default
 parameters:
   path:
     description: 'path to file or directory to scan'
-    required: true
+    type: string
   config_path:
     description: 'path to configuration file'
-    required: false
+    type: string
   platform_type:
     description: 'case insensitive list of platform types to scan'
-    required: false
+    type: string
   exclude_paths:
     description: "exclude paths from scan, supports glob, quoted comma separated string example: './shouldNotScan/*,somefile.txt'"
-    required: false
+    type: string
   exclude_queries:
     description: exclude queries by providing the query ID
-    required: false
+    type: string
   exclude_categories:
     description: exclude categories by providing its name, can be provided multiple times or as a comma separated string
-    required: false
+    type: string
   exclude_results:
     description: "exclude results by providing the similarity ID of a result"
-    required: false
+    type: string
   output_formats:
     description: "formats in which the results report will be exported (json, sarif)"
-    required: false
+    type: enum
+    enum: ["json", "sarif"]
   output_path:
     description: 'file path to store results report (json, sarif)'
-    required: false
+    type: string
   payload_path:
     description: 'file path to store source internal representation in JSON format'
-    required: false
+    type: string
   queries:
     description: 'path to directory with queries (default "./assets/queries")'
-    required: false
+    type: string
   verbose:
     description: 'verbose scan'
 steps:

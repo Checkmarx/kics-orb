@@ -1,11 +1,9 @@
 description: >
   This is a sample executor using Docker and Node.
 docker:
-  - image: 'cimg/node:<<parameters.tag>>'
+  - image: 'checkmarx/kics'
 parameters:
   tag:
-    default: lts
+    default: nightly-alpine
     description: >
-      Pick a specific circleci/node image variant:
-      https://hub.docker.com/r/cimg/node/tags
     type: string

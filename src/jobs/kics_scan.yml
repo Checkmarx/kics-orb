@@ -1,0 +1,45 @@
+description: |
+  This job will run kics scan
+executor: default
+parameters:
+  path:
+    description: 'path to file or directory to scan'
+    required: true
+  config_path:
+    description: 'path to configuration file'
+    required: false
+  platform_type:
+    description: 'case insensitive list of platform types to scan'
+    required: false
+  exclude_paths:
+    description: "exclude paths from scan, supports glob, quoted comma separated string example: './shouldNotScan/*,somefile.txt'"
+    required: false
+  exclude_queries:
+    description: exclude queries by providing the query ID
+    required: false
+  exclude_categories:
+    description: exclude categories by providing its name, can be provided multiple times or as a comma separated string
+    required: false
+  exclude_results:
+    description: "exclude results by providing the similarity ID of a result"
+    required: false
+  output_formats:
+    description: "formats in which the results report will be exported (json, sarif)"
+    required: false
+  output_path:
+    description: 'file path to store results report (json, sarif)'
+    required: false
+  payload_path:
+    description: 'file path to store source internal representation in JSON format'
+    required: false
+  queries:
+    description: 'path to directory with queries (default "./assets/queries")'
+    required: false
+  verbose:
+    description: 'verbose scan'
+steps:
+  - checkout
+  - scan:
+      directory: <<parameters.directory>>
+      file: <<parameters.file>>
+      output: <<parameters.output>>

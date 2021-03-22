@@ -1,5 +1,5 @@
 description: |
-  Run Bridgecrew scan
+  Run KICS scan
 parameters:
   path:
     description: 'path to file or directory to scan'

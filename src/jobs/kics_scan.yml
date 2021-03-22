@@ -38,9 +38,9 @@ parameters:
     type: string
   verbose:
     description: 'verbose scan'
+    type: string
 steps:
   - checkout
   - scan:
-      directory: <<parameters.directory>>
-      file: <<parameters.file>>
-      output: <<parameters.output>>
+      path: <<parameters.directory>>
+      output_formats: <<parameters.output_formats>>

@@ -37,7 +37,6 @@ workflows:
           requires:
             - orb-tools/lint
             - orb-tools/pack
-            - bats/run
 
       - orb-tools/trigger-integration-tests-workflow:
           name: trigger-integration-dev

@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  # Replace this with your own!
   kics-scan: checkmarx-kics/kics-scan@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0
 
@@ -22,7 +21,7 @@ jobs:
     steps:
       - checkout
       - kics-scan/scan:
-          path: .
+          path: "."
       
 workflows:
   # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.

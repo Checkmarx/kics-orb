@@ -5,5 +5,4 @@ docker:
 parameters:
   tag:
     default: nightly-alpine
-    description: >
     type: string

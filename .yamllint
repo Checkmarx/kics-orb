@@ -4,4 +4,6 @@ rules:
     line-length:
         max: 300
         allow-non-breakable-inline-mappings: true
+    new-line-at-end-of-file: disable
+	
 

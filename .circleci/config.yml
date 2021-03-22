@@ -17,20 +17,17 @@ parameters:
 jobs:
   # Define one or more jobs which will utilize your orb's commands and parameters to validate your changes.
   integration-test-1:
-    executor: default
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
-      - kics-scan/scan:
-          path: "."
 workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
       - orb-tools/pack # Pack orb source
-      # Publish development version(s) of the orb.
       - orb-tools/publish-dev:
           orb-name: checkmarx-kics/kics-scan
-          context: orb-publishing # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user.
           requires:
             - orb-tools/pack
 

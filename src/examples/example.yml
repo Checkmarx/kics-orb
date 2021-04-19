@@ -6,8 +6,15 @@ description: >
 usage:
   version: 2.1
   orbs:
-    <orb-name>: <namespace>/<orb-name>@1.2.3
+    kics: checkmarx-kics/kics-scan@1.0.2
   workflows:
-    use-my-orb:
+    kics scan:
       jobs:
-        - <orb-name>/<job-name>
+        - kics/kics_scan:
+            path: .
+            output_formats: json
+            output_path: results.json
+        - run:
+          name: display results
+          command: |
+            cat results.json

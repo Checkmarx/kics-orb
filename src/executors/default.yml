@@ -1,5 +1,5 @@
 description: >
-  This is a sample executor using Docker and Node.
+  KICS executer using kics latest docker image
 docker:
   - image: 'checkmarx/kics:latest-alpine'
 parameters:

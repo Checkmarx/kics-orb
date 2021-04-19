@@ -1,11 +1,9 @@
 version: 2.1
 
 description: >
-  Sample orb description
-# What will your orb allow users to accomplish?
-# Descriptions should be short, simple, and informative.
+  Orb integration of checkmarx's kics Find security vulnerabilities, compliance issues, and infrastructure misconfigurations
+  early in the development cycle of your infrastructure-as-code with KICS by Checkmarx.
 
-# This information will be displayed in the orb registry and is not mandatory.
 display:
   home_url: "https://www.kics.io"
   source_url: "https://www.github.com/Checkmarx/kics-orb"

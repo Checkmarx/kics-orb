@@ -25,7 +25,11 @@ workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - orb-tools/pack # Pack orb source
+      - orb-tools/pack:
+          source-dir: src
+          destination-orb-path: orb.yml
+          workspace-path: orb.yml
+          artifact-path: orb.yml
       - orb-tools/publish-dev:
           orb-name: checkmarx-kics/kics-scan
           requires:

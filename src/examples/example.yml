@@ -14,7 +14,3 @@ usage:
             path: .
             output_formats: json
             output_path: results.json
-        - run:
-          name: display results
-          command: |
-            cat results.json

@@ -1,7 +1,7 @@
 description: >
   This is a sample executor using Docker and Node.
 docker:
-  - image: 'checkmarx/kics'
+  - image: 'checkmarx/kics:latest-alpine'
 parameters:
   tag:
     default: nightly-alpine

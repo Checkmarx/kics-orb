@@ -2,6 +2,8 @@ extends: relaxed
 
 rules:
     line-length:
-        max: 200
+        max: 300
         allow-non-breakable-inline-mappings: true
+    new-line-at-end-of-file: disable
+	
 

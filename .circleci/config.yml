@@ -21,6 +21,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - kics-scan/scan:
+          - path: "."
 workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>

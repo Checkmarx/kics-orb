@@ -18,10 +18,10 @@ jobs:
   # Define one or more jobs which will utilize your orb's commands and parameters to validate your changes.
   integration-test-1:
     docker:
-      - image: cimg/base:stable
+      - image: checkmarx/kics:latest-alpine
     steps:
       - checkout
-      - kics-scan/kics_scan:
+      - kics-scan/scan:
           path: "."
 workflows:
   test-pack:

@@ -21,7 +21,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - kics-scan/scan:
+      - kics-scan/kics_scan:
           path: "."
 workflows:
   test-pack:

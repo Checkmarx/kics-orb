@@ -31,6 +31,7 @@ workflows:
           workspace-path: orb.yml
           artifact-path: orb.yml
       - orb-tools/publish-dev:
+          context: orb-publishing
           orb-name: checkmarx-kics/kics-scan
           requires:
             - orb-tools/pack

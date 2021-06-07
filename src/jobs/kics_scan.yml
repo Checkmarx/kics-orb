@@ -3,26 +3,22 @@ description: |
 executor: default
 parameters:
   path:
-    description: "path to file or directory to scan"
+    description: 'path to file or directory to scan'
     type: string
   config_path:
-    description: "path to configuration file"
+    description: 'path to configuration file'
     type: string
     default: ""
   platform_type:
-    description: "case insensitive list of platform types to scan"
+    description: 'case insensitive list of platform types to scan'
     type: string
     default: ""
   exclude_paths:
     description: "exclude paths from scan, supports glob, quoted comma separated string example: './shouldNotScan/*,somefile.txt'"
     type: string
     default: ""
-  include_queries:
-    description: "include queries by providing the query ID as a comma separated string, cannot be provided with exclude_query/exclude_categories parameter, example: 'e69890e6-fce5-461d-98ad-cb98318dfc96,4728cd65-a20c-49da-8b31-9c08b423e4db'"
-    type: string
-    default: ""
   exclude_queries:
-    description: "exclude queries by providing the query ID, cannot be provided with include_queries parameter, example: 'e69890e6-fce5-461d-98ad-cb98318dfc96,4728cd65-a20c-49da-8b31-9c08b423e4db'"
+    description: exclude queries by providing the query ID
     type: string
     default: ""
   exclude_categories:
@@ -33,25 +29,17 @@ parameters:
     description: "exclude results by providing the similarity ID of a result"
     type: string
     default: ""
-  ignore_on_exit:
-    description: "defines which kind of non-zero exits code should be ignored (accepts: all, results, errors, none)"
-    type: string
-    default: "none"
-  fail_on:
-    description: "determines which kind of results should return an exit code different from 0 (accepts: high, medium, low and info)"
-    type: string
-    default: "high,medium,low,info"
   output_formats:
-    description: "formats in which the results report will be exported (json, sarif, glsast)"
+    description: "formats in which the results report will be exported (json, sarif)"
     type: enum
-    enum: ["json", "sarif", "glsast"]
+    enum: ["json", "sarif"]
     default: "json"
   output_path:
-    description: "file path to store results report (json, sarif, glsast)"
+    description: 'file path to store results report (json, sarif)'
     type: string
     default: ""
   payload_path:
-    description: "file path to store source internal representation in JSON format"
+    description: 'file path to store source internal representation in JSON format'
     type: string
     default: ""
   queries:
@@ -59,13 +47,9 @@ parameters:
     type: string
     default: ""
   verbose:
-    description: "verbose scan"
+    description: 'verbose scan'
     type: string
     default: ""
-  timeout:
-    description: number of seconds the query has to execute before being canceled (default 60)
-    type: integer
-    default: 60
 steps:
   - checkout
   - scan:
@@ -73,15 +57,11 @@ steps:
       config_path: <<parameters.config_path>>
       platform_type: <<parameters.platform_type>>
       exclude_paths: <<parameters.exclude_paths>>
-      include_queries: <<parameters.include_queries>>
       exclude_queries: <<parameters.exclude_queries>>
       exclude_categories: <<parameters.exclude_categories>>
       exclude_results: <<parameters.exclude_results>>
-      ignore_on_exit: <<parameters.ignore_on_exit>>
-      fail_on: <<parameters.fail_on>>
       output_formats: <<parameters.output_formats>>
       output_path: <<parameters.output_path>>
       payload_path: <<parameters.payload_path>>
       queries: <<parameters.queries>>
       verbose: <<parameters.verbose>>
-      timeout: <<parameters.timeout>>

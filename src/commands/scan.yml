@@ -2,22 +2,26 @@ description: |
   Run KICS scan
 parameters:
   path:
-    description: 'path to file or directory to scan'
+    description: "path to file or directory to scan"
     type: string
   config_path:
-    description: 'path to configuration file'
+    description: "path to configuration file"
     type: string
     default: ""
   platform_type:
-    description: 'case insensitive list of platform types to scan'
+    description: "case insensitive list of platform types to scan"
     type: string
     default: ""
   exclude_paths:
     description: "exclude paths from scan, supports glob, quoted comma separated string example: './shouldNotScan/*,somefile.txt'"
     type: string
     default: ""
+  include_queries:
+    description: "include queries by providing the query ID as a comma separated string, cannot be provided with exclude_query/exclude_categories parameter, example: 'e69890e6-fce5-461d-98ad-cb98318dfc96,4728cd65-a20c-49da-8b31-9c08b423e4db'"
+    type: string
+    default: ""
   exclude_queries:
-    description: exclude queries by providing the query ID
+    description: "exclude queries by providing the query ID, cannot be provided with include_queries parameter, example: 'e69890e6-fce5-461d-98ad-cb98318dfc96,4728cd65-a20c-49da-8b31-9c08b423e4db'"
     type: string
     default: ""
   exclude_categories:
@@ -28,17 +32,25 @@ parameters:
     description: "exclude results by providing the similarity ID of a result"
     type: string
     default: ""
+  ignore_on_exit:
+    description: "defines which kind of non-zero exits code should be ignored (accepts: all, results, errors, none)"
+    type: string
+    default: "none"
+  fail_on:
+    description: "determines which kind of results should return an exit code different from 0 (accepts: high, medium, low and info)"
+    type: string
+    default: "high,medium,low,info"
   output_formats:
-    description: "formats in which the results report will be exported (json, sarif)"
+    description: "formats in which the results report will be exported (json, sarif, glsast)"
     type: enum
-    enum: ["json", "sarif"]
+    enum: ["json", "sarif", "glsast"]
     default: "json"
   output_path:
-    description: 'file path to store results report (json, sarif)'
+    description: "file path to store results report (json, sarif, glsast)"
     type: string
     default: ""
   payload_path:
-    description: 'file path to store source internal representation in JSON format'
+    description: "file path to store source internal representation in JSON format"
     type: string
     default: ""
   queries:
@@ -46,9 +58,13 @@ parameters:
     type: string
     default: ""
   verbose:
-    description: 'verbose scan'
+    description: "verbose scan"
     type: string
     default: ""
+  timeout:
+    description: number of seconds the query has to execute before being canceled (default 60)
+    type: integer
+    default: 60
 steps:
   - run:
       name: Scan
@@ -60,11 +76,15 @@ steps:
         INPUT_CONFIG_PATH=<<parameters.config_path>>
         INPUT_EXCLUDE_PATHS=<<parameters.exclude_paths>>
         INPUT_EXCLUDE_RESULTS=<<parameters.exclude_results>>
+        INPUT_INCLUDE_QUERIES=<<parameters.include_queries>>
         INPUT_EXCLUDE_QUERIES=<<parameters.exclude_queries>>
         INPUT_EXCLUDE_CATEGORIES=<<parameters.exclude_categories>>
+        INPUT_FAIL_ON=<<parameters.fail_on>>
+        INPUT_IGNORE_ON_EXIT=<<parameters.ignore_on_exit>>
         INPUT_OUTPUT_FORMATS=<<parameters.output_formats>>
         INPUT_PLATFORM_TYPE=<<parameters.platform_type>>
         INPUT_QUERIES=<<parameters.queries>>
+        INPUT_TIMEOUT=<<parameters.timeout>>
         if [ -z "$INPUT_PATH" ]
         then
               echo "${DATETIME} - ERR input path can't be empty"
@@ -77,11 +97,15 @@ steps:
         [[ ! -z "$INPUT_CONFIG_PATH" ]] && CONFIG_PATH_PARAM="--config $INPUT_CONFIG_PATH"
         [[ ! -z "$INPUT_EXCLUDE_PATHS" ]] && EXCLUDE_PATHS_PARAM="-e $INPUT_EXCLUDE_PATHS"
         [[ ! -z "$INPUT_EXCLUDE_RESULTS" ]] && EXCLUDE_RESULTS_PARAM="-x $INPUT_EXCLUDE_RESULTS"
+        [[ ! -z "$INPUT_INCLUDE_QUERIES" ]] && INCLUDE_QUERIES_PARAM="--include-queries $INPUT_INCLUDE_QUERIES"
         [[ ! -z "$INPUT_EXCLUDE_QUERIES" ]] && EXCLUDE_QUERIES_PARAM="--exclude-queries $INPUT_EXCLUDE_QUERIES"
         [[ ! -z "$INPUT_EXCLUDE_CATEGORIES" ]] && EXCLUDE_CATEGORIES_PARAM="--exclude-categories $INPUT_EXCLUDE_CATEGORIES"
         [[ ! -z "$INPUT_OUTPUT_FORMATS" ]] && OUTPUT_FORMATS_PARAM="--report-formats $INPUT_OUTPUT_FORMATS"
+        [[ ! -z "$INPUT_FAIL_ON" ]] && FAIL_ON_PARAM="--fail-on $INPUT_FAIL_ON"
+        [[ ! -z "$INPUT_IGNORE_ON_EXIT" ]] && IGNORE_ON_EXIT_PARAM="--ignore-on-exit $INPUT_IGNORE_ON_EXIT"
         [[ ! -z "$INPUT_PLATFORM_TYPE" ]] && PLATFORM_TYPE_PARAM="--type $INPUT_PLATFORM_TYPE"
         [[ ! -z "$INPUT_VERBOSE" ]] && VERBOSE_PARAM="-v"
+        [[ ! -z "$INPUT_TIMEOUT" ]] && TIMEOUT_PARAM="--timeout $INPUT_TIMEOUT"
         if [ ! -z "$INPUT_QUERIES" ]
         then
             QUERIES_PARAM="-q $INPUT_QUERIES"
@@ -89,5 +113,5 @@ steps:
             QUERIES_PARAM="-q /app/bin/assets/queries"
         fi
         echo "${DATETIME} - INF : about to scan directory $INPUT_PATH"
-        echo "${DATETIME} - INF : kics command kics $INPUT_PARAM $OUTPUT_PATH_PARAM $OUTPUT_FORMATS_PARAM $PLATFORM_TYPE_PARAM $PAYLOAD_PATH_PARAM $CONFIG_PATH_PARAM $EXCLUDE_PATHS_PARAM $EXCLUDE_CATEGORIES_PARAM $EXCLUDE_RESULTS_PARAM $EXCLUDE_QUERIES_PARAM $QUERIES_PARAM $VERBOSE_PARAM"
-        /app/bin/kics --no-progress $INPUT_PARAM $OUTPUT_PATH_PARAM $OUTPUT_FORMATS_PARAM $PLATFORM_TYPE_PARAM $PAYLOAD_PATH_PARAM $CONFIG_PATH_PARAM $EXCLUDE_PATHS_PARAM $EXCLUDE_CATEGORIES_PARAM $EXCLUDE_RESULTS_PARAM $EXCLUDE_QUERIES_PARAM $QUERIES_PARAM $VERBOSE_PARAM
+        echo "${DATETIME} - INF : kics command kics $INPUT_PARAM $OUTPUT_PATH_PARAM $INCLUDE_QUERIES_PARAM $INPUT_IGNORE_ON_EXIT $INPUT_FAIL_ON $OUTPUT_FORMATS_PARAM $PLATFORM_TYPE_PARAM $PAYLOAD_PATH_PARAM $CONFIG_PATH_PARAM $EXCLUDE_PATHS_PARAM $EXCLUDE_CATEGORIES_PARAM $EXCLUDE_RESULTS_PARAM $EXCLUDE_QUERIES_PARAM $QUERIES_PARAM $VERBOSE_PARAM $TIMEOUT_PARAM"
+        /app/bin/kics scan --no-progress $INPUT_PARAM $OUTPUT_PATH_PARAM $INCLUDE_QUERIES_PARAM $INPUT_IGNORE_ON_EXIT $INPUT_FAIL_ON $OUTPUT_FORMATS_PARAM $PLATFORM_TYPE_PARAM $PAYLOAD_PATH_PARAM $CONFIG_PATH_PARAM $EXCLUDE_PATHS_PARAM $EXCLUDE_CATEGORIES_PARAM $EXCLUDE_RESULTS_PARAM $EXCLUDE_QUERIES_PARAM $QUERIES_PARAM $VERBOSE_PARAM $TIMEOUT_PARAM
